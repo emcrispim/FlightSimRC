@@ -1,0 +1,204 @@
+##########################################################################
+# Author:               Eduardo Crispim, emcrispim@gmail.com
+# Date:                 July, 2016
+# 
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 2 or (at your
+# option) any later version as published by the Free Software Foundation.
+#
+#########################################################################
+
+
+<Status@Widget>:
+	size_hint_x:0.05
+    r:0
+    g:0
+    canvas:
+		Color:
+			rgb: self.r,self.g,0
+		Rectangle:
+			size: self.height/2,self.height/2
+			pos:  self.pos[0],self.pos[1]+self.height/4
+
+
+
+
+<MainUI>:
+	orientation:'vertical'
+	BoxLayout:
+		size_hint_y:0.06
+		orientation:'horizontal'
+		Label:
+			text:'Incoming port:'
+			size_hint_x:0.1
+		TextInput:
+			size_hint_x:0.1
+			id:incomingport
+			multiline:False
+			on_focus:root.onportfocus(self.focus,self.text)
+			text:'0000'
+		Label:
+			text:''
+			size_hint_x:0.4
+		Button:
+			size_hint_x:0.3
+			text:'Restart service'
+			on_press:root.restartServices()
+	BoxLayout:
+		size_hint_y:0.1
+		orientation:'horizontal'
+		Label:
+			size_hint_x:0.1
+			text:'Comm Services:'
+		Status:
+			r:0 if root.commserviceson else 1
+			g:1 if root.commserviceson else 0
+		Label:
+			size_hint_x:0.07
+			text:'Vjoy driver:'
+		Status:
+			r:0 if root.vjoyon else 1
+			g:1 if root.vjoyon else 0
+		Label:
+			size_hint_x:0.11
+			text:'Remote Controller:'
+
+		Status:
+			r:0 if root.controlleron else 1
+			g:1 if root.controlleron else 0
+		Label:
+			size_hint_x:0.30
+	BoxLayout:
+		size_hint_y:0.8
+		orientation:'horizontal'
+		BoxLayout:
+			orientation:'vertical'
+			size_hint_x:0.05
+			Label:
+				size_hint_y:0.1
+				text:'X'
+			Slider:
+				id:X
+				size_hint_y:0.9
+				orientation:'vertical'
+				min:0
+				max:100
+				value:50
+				on_value: root.setAxis('X',self.value)
+		BoxLayout:
+			orientation:'vertical'
+			size_hint_x:0.05
+			Label:
+				size_hint_y:0.1
+				text:'Y'
+			Slider:
+				id:Y
+				size_hint_y:0.9
+				orientation:'vertical'
+				min:0
+				max:100
+				value:50
+				on_value: root.setAxis('Y',self.value)
+		BoxLayout:
+			orientation:'vertical'
+			size_hint_x:0.05
+			Label:
+				size_hint_y:0.1
+				text:'Z'
+			Slider:
+				id:Z
+				size_hint_y:0.9
+				orientation:'vertical'
+				min:0
+				max:100
+				value:50
+				on_value: root.setAxis('Z',self.value)
+		BoxLayout:
+			orientation:'vertical'
+			size_hint_x:0.05
+
+			Label:
+				size_hint_y:0.1
+				text:'Rx'
+			Slider:
+				id:Rx
+				size_hint_y:0.9
+				orientation:'vertical'
+				min:0
+				max:100
+				on_value: root.setAxis('Rx',self.value)
+		BoxLayout:
+			orientation:'vertical'
+			size_hint_x:0.05
+
+			Label:
+				size_hint_y:0.1
+				text:'Ry'
+			Slider:
+				id:Ry
+				size_hint_y:0.9
+				orientation:'vertical'
+				min:0
+				max:100
+				on_value: root.setAxis('Ry',self.value)
+		BoxLayout:
+			orientation:'vertical'
+			size_hint_x:0.05
+
+			Label:
+				size_hint_y:0.1
+				text:'Rz'
+			Slider:
+				id:Rz
+				size_hint_y:0.9
+				orientation:'vertical'
+				min:0
+				max:100
+				on_value: root.setAxis('Rz',self.value)
+		BoxLayout:
+			orientation:'vertical'
+			size_hint_x:0.05
+
+			Label:
+				size_hint_y:0.1
+				text:'sl0'
+			Slider:
+				id:sl0
+				size_hint_y:0.9
+				orientation:'vertical'
+				min:0
+				max:100
+				on_value: root.setAxis('sl0',self.value)
+		BoxLayout:
+			orientation:'vertical'
+			size_hint_x:0.05
+
+			Label:
+				size_hint_y:0.1
+				text:'sl1'
+			Slider:
+				id:sl1
+				size_hint_y:0.9
+				orientation:'vertical'
+				min:0
+				max:100
+				on_value: root.setAxis('sl1',self.value)
+		ScrollView:
+			id:scroll
+			size_hint_x:0.5
+			canvas.before:
+				Color:
+					rgba: 1, 1, 1,1
+				Rectangle:
+					size:self.parent.size
+				Color:
+					rgba: 0,0,0,1
+			Label:
+				id:loglabel
+				color: 1,1,1,1
+				size_hint_y: None
+				markup: True
+				height: self.texture_size[1]
+				text_size: self.width, None
+				text: ''
+
