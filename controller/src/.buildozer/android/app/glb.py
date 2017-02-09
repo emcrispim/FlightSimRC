@@ -1,0 +1,2 @@
+root = None
+app  = None

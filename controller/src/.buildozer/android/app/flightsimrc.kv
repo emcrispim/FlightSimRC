@@ -1,0 +1,345 @@
+##########################################################################
+# Author:               Eduardo Crispim, emcrispim@gmail.com
+# Date:                 July, 2016
+# 
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 2 or (at your
+# option) any later version as published by the Free Software Foundation.
+#
+#########################################################################
+
+<B1@ToggleButton>:
+    font_size:'16sp'
+	bold: True
+	background_normal:'atlas://img/myatlas/buttons_up'
+	background_down:'atlas://img/myatlas/buttons_down'
+
+
+
+<Lights@Widget>:
+	size_hint:None,None
+	act:0
+	ack:0
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"img/bgLights.png"
+			#source:"img/helperknob.png"
+		PushMatrix
+		Color:
+			a:self.act
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"atlas://img/myatlas/act_on"
+		Color:
+			a:self.ack
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"atlas://img/myatlas/ack_on"
+		PopMatrix
+		Color:
+			a:1
+<RudderKnob>:
+	size_hint:None,None
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"atlas://img/myatlas/rudderknob"
+
+
+<DgtPad>:
+	size_hint:None,None
+	pos:0,self.parent.height
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"img/bgDgtPad.png"
+
+<ButtonsPanel>:
+	pos:0,-self.height
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"img/buttonspanel.png"
+
+<RudderTrim>:
+	pos:0,-self.height
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			texture:app.texture_ruddertrim_wheel
+			tex_coords: [root.xtrans,0,root.xtrans+1,0,root.xtrans+1,1,root.xtrans,1]
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"atlas://img/myatlas/ruddertrimmask"
+
+<touchKnob>:
+	size_hint:None,None
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"img/helperknob.png"
+
+<ElevatorTrim>:
+	size:self.parent.size
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			texture:app.texture_elevatortrim_wheel
+			tex_coords: [0,root.ytrans,1,root.ytrans,1,root.ytrans+1,0,root.ytrans+1]
+		Rectangle:
+			size:self.parent.size
+			pos:self.pos
+			source:"img/elevatortrimmask.png"
+
+<BrakesKnob>:
+	size_hint:None,None
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"atlas://img/myatlas/brakesknob"
+
+
+
+
+
+<PadCtrl>:
+	id:padctrl
+	size_hint:None,None
+	showpad:True
+	canvas:
+		Rotate:
+			angle: self.angle
+			origin: self.center
+		Color:
+			a: 1 if self.showpad else 0
+		Rectangle:
+			size: self.size
+			pos:self.pos
+			source:"atlas://img/myatlas/pad"
+		Color:
+			a: 0 if self.showpad else 1
+		Rectangle:
+			size: self.size
+			pos:self.pos
+			source:"atlas://img/myatlas/wheel"
+		Color:
+			a:1
+		
+
+<SSDP>:
+	title: 'Remote Discover'
+	size_hint: .4, .4
+	BoxLayout:
+		spacing:2
+		padding:2
+		orientation:'vertical'
+		Label:
+			id:msg
+			text:"not set"
+		Button:
+			id:bt1
+			text: "Set settings manually"
+			on_press: root.dismiss()
+
+
+<PadPanel@RelativeLayout>:
+	canvas:
+		Rectangle:
+			size:self.size
+			source:"img/bgPad.png"
+		Rectangle:
+			size:self.parent.width/22,self.parent.height/40
+			pos:self.parent.width/30,(self.parent.height/2-self.parent.height/80)+(app.elevatortrim_value-50)*self.parent.height/230
+			source:"atlas://img/myatlas/trim"
+		Rectangle:
+			size:self.parent.width/40,self.parent.height/22
+			pos:self.parent.width/2.285+(app.ruddertrim_value-50)*self.parent.width/257,self.parent.height/30
+			source:"atlas://img/myatlas/vtrim"
+
+<MainUI>:
+	rudder:rudder
+	brakes:brakes
+	padctrl:padctrl
+	elevatortrim:elevatortrim
+	ruddertrim:ruddertrim
+	knobs:knobs
+	throttle:throttle
+	flaps:flaps
+	speedbrake:speedbrake
+	lights:lights
+	buttonspanel:buttonspanel
+	dgtpad:dgtpad
+	orientation: 'horizontal'
+	# L1 LAYOUT LEFT
+
+	BoxLayout:
+		orientation:'vertical'
+		size_hint_x:0.5
+
+
+		# L2 LAYOUT UP
+
+		BoxLayout:
+			size_hint_y:0.8
+			orientation:'horizontal'
+			BoxLayout:
+				size_hint_x:0.1
+				orientation:'vertical'
+				Button:
+					id:bt_settings
+					size_hint_y:None
+					height:self.parent.width
+					background_normal:'atlas://img/myatlas/settingsBT_normal'
+					background_down:'atlas://img/myatlas/settingsBT_down'
+					on_press:root.openSettings()
+				ToggleButton:
+					size_hint_y:None
+					height:self.parent.width*2
+					background_normal:'atlas://img/myatlas/accelerometerBT_normal'
+					background_down:'atlas://img/myatlas/accelerometerBT_down'
+					on_press:root.teste(self)
+				RelativeLayout:
+					size_hint_y:1
+					ElevatorTrim:
+						id:elevatortrim
+			PadPanel:
+				size_hint_x:0.9
+				PadCtrl:
+					id:padctrl
+					size:self.parent.width/4,self.parent.height/4
+					center:self.parent.width/2,self.parent.height/2
+
+
+
+		# L2 LAYOUT DOWN
+
+		BoxLayout:
+			orientation:'horizontal'
+			size_hint_y:0.2
+
+			ToggleButton:
+				size_hint_x:0.1
+				group:'buttons'
+				background_normal:'atlas://img/myatlas/ruddertrimBT_normal'
+				background_down:'atlas://img/myatlas/ruddertrimBT_down'
+				on_press:root.on_ruddertrimBT(self.state)
+
+			RelativeLayout:
+				size_hint_x:0.9
+				canvas:
+					Rectangle:
+						size:self.size
+						pos:0,0
+						source:"img/bgRudder.png"
+				RudderKnob:
+					id:rudder
+					size: (self.parent.height ,self.parent.height)
+					center:(self.width/2,self.height/2)
+				RudderTrim:
+					id:ruddertrim
+				ButtonsPanel:
+					id:buttonspanel
+					BoxLayout:
+						size:self.parent.size
+						pos:self.parent.pos
+						orientation:'horizontal'
+						B1:
+							id:btn1_toggle
+							on_press:root.on_btpress('btn1_toggle')
+						B1:
+							id:btn2_toggle
+							on_press:root.on_btpress('btn2_toggle')
+						B1:
+							id:btn3_toggle
+							on_press:root.on_btpress('btn3_toggle')
+						B1:
+							id:btn4_toggle
+							on_press:root.on_btpress('btn4_toggle')
+						
+
+
+
+
+
+	
+	# L1 LAYOUT RIGHT
+
+	BoxLayout:
+		orientation:'vertical'
+		size_hint_x:0.5
+		BoxLayout:
+			id:background
+			#size_hint_y:0.9
+			orientation:'horizontal'
+			RelativeLayout:
+				size_hint_x:0.87
+				Widget:
+					size:self.parent.size
+					pos:self.pos
+					canvas:
+						Rectangle:
+							size:self.size
+							pos:self.pos
+							source:"img/background.png"
+				Knobs3D:
+					id:knobs
+				touchKnob:
+					id:speedbrake
+					size:self.parent.width/5,self.parent.height/5
+					center:self.width/2,self.parent.height/2
+				touchKnob:
+					id:throttle
+					size:self.parent.width/2.5,self.parent.height/4
+					center:self.parent.width/2,self.parent.height/2
+				touchKnob:
+					id:flaps
+					size:self.parent.width/5,self.parent.height/5
+					#center:self.parent.width/1.15,self.parent.height/2
+					center:self.parent.width-self.width/1.5,self.parent.height/2
+				DgtPad:
+					id:dgtpad
+					size:self.parent.width,self.parent.width
+
+			BoxLayout:
+				orientation:'vertical'
+				size_hint_x:0.13
+				Lights:
+					id:lights
+					size_hint_y:0.1
+					width:self.parent.width
+				RelativeLayout:
+					size_hint_y:0.5
+					canvas:
+						Rectangle:
+							size:self.size
+							pos:0,0
+							source:"img/bgBrakes.png"
+					BrakesKnob:
+						id:brakes
+						size: (self.parent.width ,self.parent.width)
+						center:(self.parent.width/2,self.height/2)
+			
+				ToggleButton:
+					size_hint_y:0.2
+					text:'dgt pad'
+					on_press:root.on_dgtpadBT(self.state)
+				ToggleButton:
+					size_hint_y:0.2
+					group:'buttons'
+					background_normal:'atlas://img/myatlas/buttonspanel_up'
+					background_down:'atlas://img/myatlas/buttonspanel_down'
+					on_press:root.on_buttonpanelBT(self.state)
+
+	
