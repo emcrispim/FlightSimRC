@@ -1,2 +1,0 @@
-root = None
-app  = None

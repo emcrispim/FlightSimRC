@@ -183,6 +183,37 @@
 				min:0
 				max:100
 				on_value: root.setAxis('sl1',self.value)
+		BoxLayout:
+			orientation:'vertical'
+			size_hint_x:0.05
+
+			Label:
+				size_hint_y:0.1
+				text:'X1'
+			Slider:
+				id:X1
+				size_hint_y:0.9
+				orientation:'vertical'
+				min:0
+				max:100
+				value:50
+				on_value: root.setAxis('X1',self.value)
+		BoxLayout:
+			orientation:'vertical'
+			size_hint_x:0.05
+
+			Label:
+				size_hint_y:0.1
+				text:'Y1'
+			Slider:
+				id:Y1
+				size_hint_y:0.9
+				orientation:'vertical'
+				min:0
+				max:100
+				value:50
+				on_value: root.setAxis('Y1',self.value)
+		
 		ScrollView:
 			id:scroll
 			size_hint_x:0.5

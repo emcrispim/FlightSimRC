@@ -1,4 +1,0 @@
-title=FlightSimRC
-author=ecrispim
-orientation=landscape
-fullscreen=1

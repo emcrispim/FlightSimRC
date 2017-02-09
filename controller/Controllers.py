@@ -21,6 +21,7 @@ from kivy.animation import Animation
 class touchKnob(Widget):
   toffsety = None
   name = None
+  knob_active = True
 
 #--------------------------------------------------------------------
   def __init__(self,**kwargs):
@@ -87,7 +88,7 @@ class touchKnob(Widget):
 
 #--------------------------------------------------------------------
   def on_touch_down(self,touch):
-    if self.collide_point(*touch.pos):
+    if self.collide_point(*touch.pos) and self.knob_active:
       tx,ty = touch.pos
       self.toffsety = self.center_y - ty
       touch.grab(self)
@@ -327,6 +328,9 @@ class DgtPad(Widget):
     def complete(animation,widget):
       self.dgtpad_active = True
 
+    glb.root.speedbrake.knob_active = False
+    glb.root.throttle.knob_active = False
+    glb.root.flaps.knob_active = False
     Animation.cancel_all(self)
     anim = Animation(y=self.parent.height-self.height*1.02,t='out_expo',duration=0.3) 
     anim.bind(on_complete=complete)
@@ -336,6 +340,9 @@ class DgtPad(Widget):
   def dispanel(self):
     def complete(animation,widget):
       self.dgtpad_active = False
+      glb.root.speedbrake.knob_active = True
+      glb.root.throttle.knob_active = True
+      glb.root.flaps.knob_active = True
       
     Animation.cancel_all(self)
     anim = Animation(y=self.parent.height,t='out_expo',duration=0.3) 

@@ -72,13 +72,6 @@ class MainUI(BoxLayout):#the app ui
 	lights_ack_timer = 0
 	settings = Settings()
 
-	def test(self,bt):
-		#print self.ids.background.width*2
-		#print self.ids.background.height*2
-		print bt.width*2
-		print bt.height*2
-		print self.brakes.parent.width*2
-		print self.brakes.parent.height*2
 #--------------------------------------------------------------------
 	def __init__(self, **kwargs):
 		super(MainUI, self).__init__(**kwargs)

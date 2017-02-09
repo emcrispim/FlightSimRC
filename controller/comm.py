@@ -135,6 +135,7 @@ class ctrl():
 
 	def send(self,msg):
 		self.UDPSock_out.sendto(msg,(self.ip,self.port))
+		Logger.debug("SEND: %s"%msg.replace(':',';'))
 
 
 
