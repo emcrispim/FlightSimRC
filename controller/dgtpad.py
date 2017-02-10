@@ -33,6 +33,7 @@ class DgtPadPanel(Widget):
     glb.root.throttle.knob_active = False
     glb.root.flaps.knob_active = False
     Animation.cancel_all(self)
+    glb.root.dgtpadctrl.enpanel()
     anim = Animation(y=self.parent.height-self.height*1.02,t='out_expo',duration=0.3) 
     anim.bind(on_complete=complete)
     anim.start(self)
@@ -68,3 +69,13 @@ class DgtPadCtrl(Widget):
       self.toffsetx = self.center_x - tx
       self.toffsety = self.center_y - ty
       touch.grab(self)
+
+#--------------------------------------------------------------------
+  def enpanel(self):
+    def complete(animation,widget):
+      self.pad_active = True
+
+    Animation.cancel_all(self)
+    anim = Animation(center_y=self.parent.parent.height-self.parent.height*1.04/2,t='out_expo',duration=0.3) 
+    anim.bind(on_complete=complete)
+    anim.start(self)

@@ -66,6 +66,7 @@ class MainUI(BoxLayout):#the app ui
 	lights				= ObjectProperty(None)
 	buttonspanel 		= ObjectProperty(None)
 	dgtpadpanel 		= ObjectProperty(None)
+	DgtPadCtrl        	= ObjectProperty(None)
 	init5on = False
 	glb.comm = commctrl = comm.ctrl()
 	send = {}

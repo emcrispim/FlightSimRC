@@ -131,11 +131,12 @@
 
 <DgtPadCtrl>:
 	size_hint:None,None
+	center:self.parent.width/2,self.parent.width*2
 	canvas:
 		Rectangle:
 			size: self.size
 			pos:self.pos
-			source:"img/povhat.png"
+			source:"atlas://img/myatlas/povhat"
 
 
 
@@ -189,6 +190,7 @@
 	lights:lights
 	buttonspanel:buttonspanel
 	dgtpadpanel:dgtpadpanel
+	dgtpadctrl:dgtpadctrl
 	orientation: 'horizontal'
 	# L1 LAYOUT LEFT
 
@@ -313,8 +315,8 @@
 					id:dgtpadpanel
 					size:self.parent.width,self.parent.width
 					DgtPadCtrl:
-						size:self.parent.width/4,self.parent.height/4
-						center:self.parent.width/2,self.parent.height/2
+						id:dgtpadctrl
+					
 
 
 			BoxLayout:
