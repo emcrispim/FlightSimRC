@@ -31,6 +31,7 @@ from kivy.clock import Clock
 
 # App libraries
 from Controllers import *
+from dgtpad import DgtPadPanel,DgtPadCtrl
 from knobs3d import Knobs3D
 from Settings import *
 import comm
@@ -64,7 +65,7 @@ class MainUI(BoxLayout):#the app ui
 	speedbrake 			= ObjectProperty(None)
 	lights				= ObjectProperty(None)
 	buttonspanel 		= ObjectProperty(None)
-	dgtpad 				= ObjectProperty(None)
+	dgtpadpanel 		= ObjectProperty(None)
 	init5on = False
 	glb.comm = commctrl = comm.ctrl()
 	send = {}
@@ -146,9 +147,9 @@ class MainUI(BoxLayout):#the app ui
 
 	def on_dgtpadBT(self,state):
 		if state == "down":
-			self.dgtpad.enpanel()
+			self.dgtpadpanel.enpanel()
 		else:
-			self.dgtpad.dispanel()
+			self.dgtpadpanel.dispanel()
 
 #--------------------------------------------------------------------
 

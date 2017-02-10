@@ -51,15 +51,6 @@
 			source:"atlas://img/myatlas/rudderknob"
 
 
-<DgtPad>:
-	size_hint:None,None
-	pos:0,self.parent.height
-	canvas:
-		Rectangle:
-			size:self.size
-			pos:self.pos
-			source:"img/bgDgtPad.png"
-
 <ButtonsPanel>:
 	pos:0,-self.height
 	canvas:
@@ -111,11 +102,58 @@
 			source:"atlas://img/myatlas/brakesknob"
 
 
+<SSDP>:
+	title: 'Remote Discover'
+	size_hint: .4, .4
+	BoxLayout:
+		spacing:2
+		padding:2
+		orientation:'vertical'
+		Label:
+			id:msg
+			text:"not set"
+		Button:
+			id:bt1
+			text: "Set settings manually"
+			on_press: root.dismiss()
 
 
+
+<DgtPadPanel>:
+	size_hint:None,None
+	pos:0,self.parent.height
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"img/bgDgtPad.png"
+
+
+<DgtPadCtrl>:
+	size_hint:None,None
+	canvas:
+		Rectangle:
+			size: self.size
+			pos:self.pos
+			source:"img/povhat.png"
+
+
+
+<PadPanel@RelativeLayout>:
+	canvas:
+		Rectangle:
+			size:self.size
+			source:"img/bgPad.png"
+		Rectangle:
+			size:self.parent.width/22,self.parent.height/40
+			pos:self.parent.width/30,(self.parent.height/2-self.parent.height/80)+(app.elevatortrim_value-50)*self.parent.height/230
+			source:"atlas://img/myatlas/trim"
+		Rectangle:
+			size:self.parent.width/40,self.parent.height/22
+			pos:self.parent.width/2.285+(app.ruddertrim_value-50)*self.parent.width/257,self.parent.height/30
+			source:"atlas://img/myatlas/vtrim"
 
 <PadCtrl>:
-	id:padctrl
 	size_hint:None,None
 	showpad:True
 	canvas:
@@ -136,37 +174,7 @@
 			source:"atlas://img/myatlas/wheel"
 		Color:
 			a:1
-		
 
-<SSDP>:
-	title: 'Remote Discover'
-	size_hint: .4, .4
-	BoxLayout:
-		spacing:2
-		padding:2
-		orientation:'vertical'
-		Label:
-			id:msg
-			text:"not set"
-		Button:
-			id:bt1
-			text: "Set settings manually"
-			on_press: root.dismiss()
-
-
-<PadPanel@RelativeLayout>:
-	canvas:
-		Rectangle:
-			size:self.size
-			source:"img/bgPad.png"
-		Rectangle:
-			size:self.parent.width/22,self.parent.height/40
-			pos:self.parent.width/30,(self.parent.height/2-self.parent.height/80)+(app.elevatortrim_value-50)*self.parent.height/230
-			source:"atlas://img/myatlas/trim"
-		Rectangle:
-			size:self.parent.width/40,self.parent.height/22
-			pos:self.parent.width/2.285+(app.ruddertrim_value-50)*self.parent.width/257,self.parent.height/30
-			source:"atlas://img/myatlas/vtrim"
 
 <MainUI>:
 	rudder:rudder
@@ -180,7 +188,7 @@
 	speedbrake:speedbrake
 	lights:lights
 	buttonspanel:buttonspanel
-	dgtpad:dgtpad
+	dgtpadpanel:dgtpadpanel
 	orientation: 'horizontal'
 	# L1 LAYOUT LEFT
 
@@ -301,9 +309,13 @@
 					id:flaps
 					size:self.parent.width/5,self.parent.height/5
 					center:self.parent.width-self.width/1.5,self.parent.height/2
-				DgtPad:
-					id:dgtpad
+				DgtPadPanel:
+					id:dgtpadpanel
 					size:self.parent.width,self.parent.width
+					DgtPadCtrl:
+						size:self.parent.width/4,self.parent.height/4
+						center:self.parent.width/2,self.parent.height/2
+
 
 			BoxLayout:
 				orientation:'vertical'

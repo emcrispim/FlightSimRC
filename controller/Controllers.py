@@ -318,40 +318,6 @@ class ButtonsPanel(Widget):
 
 
 '''
-   class DgtPad
-'''
-class DgtPad(Widget):
-  dgtpad_active = False
-
-#--------------------------------------------------------------------
-  def enpanel(self):
-    def complete(animation,widget):
-      self.dgtpad_active = True
-
-    glb.root.speedbrake.knob_active = False
-    glb.root.throttle.knob_active = False
-    glb.root.flaps.knob_active = False
-    Animation.cancel_all(self)
-    anim = Animation(y=self.parent.height-self.height*1.02,t='out_expo',duration=0.3) 
-    anim.bind(on_complete=complete)
-    anim.start(self)
-
-#--------------------------------------------------------------------
-  def dispanel(self):
-    def complete(animation,widget):
-      self.dgtpad_active = False
-      glb.root.speedbrake.knob_active = True
-      glb.root.throttle.knob_active = True
-      glb.root.flaps.knob_active = True
-      
-    Animation.cancel_all(self)
-    anim = Animation(y=self.parent.height,t='out_expo',duration=0.3) 
-    anim.bind(on_complete=complete)
-    anim.start(self)
-
-
-
-'''
    class RudderTrim
 '''
 class RudderTrim(Widget):
