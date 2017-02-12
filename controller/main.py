@@ -30,9 +30,12 @@ from kivy.clock import Clock
 
 
 # App libraries
-from Controllers import *
-from dgtpad import DgtPadPanel,DgtPadCtrl
-from knobs3d import Knobs3D
+from inputs.pad import PadCtrl
+from inputs.dgtpad import DgtPadPanel,DgtPadCtrl
+from inputs.trim import RudderTrim,ElevatorTrim
+from inputs.button import ButtonsPanel
+from inputs.knobs import BrakesKnob,RudderKnob
+from inputs.knobs3d import Knobs3D,Knobs3DCtrl
 from Settings import *
 import comm
 

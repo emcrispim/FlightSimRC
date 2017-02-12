@@ -72,7 +72,7 @@
 			pos:self.pos
 			source:"atlas://img/myatlas/ruddertrimmask"
 
-<touchKnob>:
+<Knobs3DCtrl>:
 	size_hint:None,None
 	canvas:
 		Rectangle:
@@ -299,15 +299,15 @@
 							source:"img/background.png"
 				Knobs3D:
 					id:knobs
-				touchKnob:
+				Knobs3DCtrl:
 					id:speedbrake
 					size:self.parent.width/5,self.parent.height/5
 					center:self.width/2,self.parent.height/2
-				touchKnob:
+				Knobs3DCtrl:
 					id:throttle
 					size:self.parent.width/2.5,self.parent.height/4
 					center:self.parent.width/2,self.parent.height/2
-				touchKnob:
+				Knobs3DCtrl:
 					id:flaps
 					size:self.parent.width/5,self.parent.height/5
 					center:self.parent.width-self.width/1.5,self.parent.height/2
