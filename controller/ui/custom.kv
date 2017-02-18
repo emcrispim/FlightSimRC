@@ -1,0 +1,155 @@
+<B1@ToggleButton>:
+    font_size:'16sp'
+	bold: True
+	background_normal:'atlas://img/myatlas/buttons_up'
+	background_down:'atlas://img/myatlas/buttons_down'
+
+
+
+<Lights@Widget>:
+	size_hint:None,None
+	act:0
+	ack:0
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"img/bgLights.png"
+			#source:"img/helperknob.png"
+		PushMatrix
+		Color:
+			a:self.act
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"atlas://img/myatlas/act_on"
+		Color:
+			a:self.ack
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"atlas://img/myatlas/ack_on"
+		PopMatrix
+		Color:
+			a:1
+<RudderKnob>:
+	size_hint:None,None
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"atlas://img/myatlas/rudderknob"
+
+
+<LButtonsPanel>:
+	pos:0,-self.height
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"img/buttonspanel.png"
+<RButtonsPanel>:
+	pos:0,-self.parent.height/5
+	size:(self.parent.width,self.parent.height/5)
+	canvas:
+		Rectangle:
+			size:(self.parent.width,self.parent.height/5)
+			pos:self.pos
+			source:"img/buttonspanel.png"
+
+
+<RudderTrim>:
+	pos:0,-self.height
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			texture:app.texture_ruddertrim_wheel
+			tex_coords: [root.xtrans,0,root.xtrans+1,0,root.xtrans+1,1,root.xtrans,1]
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"atlas://img/myatlas/ruddertrimmask"
+
+<Knobs3DCtrl>:
+	size_hint:None,None
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"img/helperknob.png"
+
+<ElevatorTrim>:
+	size:self.parent.size
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			texture:app.texture_elevatortrim_wheel
+			tex_coords: [0,root.ytrans,1,root.ytrans,1,root.ytrans+1,0,root.ytrans+1]
+		Rectangle:
+			size:self.parent.size
+			pos:self.pos
+			source:"img/elevatortrimmask.png"
+
+<BrakesKnob>:
+	size_hint:None,None
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"atlas://img/myatlas/brakesknob"
+
+
+<SSDP>:
+	title: 'Remote Discover'
+	size_hint: .4, .4
+	BoxLayout:
+		spacing:2
+		padding:2
+		orientation:'vertical'
+		Label:
+			id:msg
+			text:"not set"
+		Button:
+			id:bt1
+			text: "Set settings manually"
+			on_press: root.dismiss()
+
+
+
+<PadPanel@RelativeLayout>:
+	canvas:
+		Rectangle:
+			size:self.size
+			source:"img/bgPad.png"
+		Rectangle:
+			size:self.parent.width/22,self.parent.height/40
+			pos:self.parent.width/30,(self.parent.height/2-self.parent.height/80)+(app.elevatortrim_value-50)*self.parent.height/230
+			source:"atlas://img/myatlas/trim"
+		Rectangle:
+			size:self.parent.width/40,self.parent.height/22
+			pos:self.parent.width/2.285+(app.ruddertrim_value-50)*self.parent.width/257,self.parent.height/30
+			source:"atlas://img/myatlas/vtrim"
+
+<PadCtrl>:
+	size_hint:None,None
+	showpad:True
+	canvas:
+		Rotate:
+			angle: self.angle
+			origin: self.center
+		Color:
+			a: 1 if self.showpad else 0
+		Rectangle:
+			size: self.size
+			pos:self.pos
+			source:"atlas://img/myatlas/pad"
+		Color:
+			a: 0 if self.showpad else 1
+		Rectangle:
+			size: self.size
+			pos:self.pos
+			source:"atlas://img/myatlas/wheel"
+		Color:
+			a:1

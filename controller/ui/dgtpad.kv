@@ -1,0 +1,86 @@
+##########################################################################
+# Author:               Eduardo Crispim, emcrispim@gmail.com
+# Date:                 July, 2016
+# 
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License version 2 or (at your
+# option) any later version as published by the Free Software Foundation.
+#
+#########################################################################
+
+
+<DgtPadPanel>:
+	size_hint:None,None
+	pos:0,self.parent.height
+	panelNW:False
+	panelN:False
+	panelNE:False
+	panelE:False
+	panelSE:False
+	panelS:False
+	panelSW:False
+	panelW:False
+	canvas:
+		Rectangle:
+			size:self.size
+			pos:self.pos
+			source:"img/bgDgtPad.png"
+		Color:
+			a: 1 if self.panelNW else 0
+		Rectangle:
+			size:(self.size[0]/5*2,self.size[1]/5*2)
+			pos:(self.pos[0],self.pos[1]+self.height/5*3)
+			source:"atlas://img/myatlas/DgtPad_NW"
+		Color:
+			a: 1 if self.panelN else 0
+		Rectangle:
+			size:(self.size[0]/3,self.size[1]/3)
+			pos:(self.pos[0]+self.width/3,self.pos[1]+self.height/3*2)
+			source:"atlas://img/myatlas/DgtPad_N"
+		Color:
+			a: 1 if self.panelNE else 0
+		Rectangle:
+			size:(self.size[0]/5*2,self.size[1]/5*2)
+			pos:(self.pos[0]+self.width/5*3,self.pos[1]+self.height/5*3)
+			source:"atlas://img/myatlas/DgtPad_NE"
+		Color:
+			a: 1 if self.panelE else 0
+		Rectangle:
+			size:(self.size[0]/3,self.size[1]/3)
+			pos:(self.pos[0]+self.width/3*2,self.pos[1]+self.height/3)
+			source:"atlas://img/myatlas/DgtPad_E"
+		Color:
+			a: 1 if self.panelSE else 0
+		Rectangle:
+			size:(self.size[0]/5*2,self.size[1]/5*2)
+			pos:(self.pos[0]+self.width/5*3,self.pos[1])
+			source:"atlas://img/myatlas/DgtPad_SE"
+		Color:
+			a: 1 if self.panelS else 0
+		Rectangle:
+			size:(self.size[0]/3,self.size[1]/3)
+			pos:(self.pos[0]+self.width/3,self.pos[1])
+			source:"atlas://img/myatlas/DgtPad_S"
+		Color:
+			a: 1 if self.panelSW else 0
+		Rectangle:
+			size:(self.size[0]/5*2,self.size[1]/5*2)
+			pos:(self.pos[0],self.pos[1])
+			source:"atlas://img/myatlas/DgtPad_SW"
+		Color:
+			a: 1 if self.panelW else 0
+		Rectangle:
+			size:(self.size[0]/3,self.size[1]/3)
+			pos:(self.pos[0],self.pos[1]+self.height/3)
+			source:"atlas://img/myatlas/DgtPad_W"
+		Color:
+			a:1
+
+
+<DgtPadCtrl>:
+	size_hint:None,None
+	canvas:
+		Rectangle:
+			size: self.size
+			pos:self.pos
+			source:"atlas://img/myatlas/povhat"

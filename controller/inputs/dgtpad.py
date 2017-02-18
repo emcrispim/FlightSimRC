@@ -11,60 +11,12 @@
 import glb
 
 from kivy.uix.widget import Widget
-from kivy.properties import NumericProperty
+from kivy.properties import ObjectProperty,NumericProperty
 from kivy.animation import Animation
 
 
-
-
-'''
-   class DgtPadPanel
-'''
-class DgtPadPanel(Widget):
-  padpanel_active = False
-
-
-#--------------------------------------------------------------------
-  def enpanel(self):
-    def complete(animation,widget):
-      self.padpanel_active = True
-
-    glb.root.speedbrake.knob_active = False
-    glb.root.throttle.knob_active = False
-    glb.root.flaps.knob_active = False
-    Animation.cancel_all(self)
-    glb.root.dgtpadctrl.enpanel()
-    anim = Animation(y=self.parent.height-self.height*1.02,t='out_expo',duration=0.3) 
-    anim.bind(on_complete=complete)
-    anim.start(self)
-
-#--------------------------------------------------------------------
-  def dispanel(self):
-    def complete(animation,widget):
-      self.padpanel_active = False
-      glb.root.speedbrake.knob_active = True
-      glb.root.throttle.knob_active = True
-      glb.root.flaps.knob_active = True
-      
-    Animation.cancel_all(self)
-    glb.root.dgtpadctrl.dispanel()
-    anim = Animation(y=self.parent.height,t='out_expo',duration=0.3) 
-    anim.bind(on_complete=complete)
-    anim.start(self)
-
-
-'''
-   class DgtPadCtrl
-'''
-class DgtPadCtrl(Widget):
-  padactive = False
-
-  btmap = [
+MASK = [
         
-
-
-
-
     #   ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27']
 
         ['NW','NW','NW','NW','NW','NW','NW','NW','NW','N' ,'N' ,'N' ,'N' ,'N' ,'N' ,'N' ,'N' ,'N' ,'NE','NE','NE','NE','NE','NE','NE','NE','NE','NE'], #00
@@ -97,6 +49,66 @@ class DgtPadCtrl(Widget):
         ['SW','SW','SW','SW','SW','SW','SW','SW','SW','S' ,'S' ,'S' ,'S' ,'S' ,'S' ,'S' ,'S' ,'S' ,'SE','SE','SE','SE','SE','SE','SE','SE','SE','SE'], #27
     #   ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27']
        ]
+
+
+'''
+   class DgtPadPanel
+'''
+class DgtPadPanel(Widget):
+  padpanel_active = False
+
+
+#--------------------------------------------------------------------
+  def __init__(self,**kwargs):
+    super(DgtPadPanel, self).__init__(**kwargs)
+
+
+#--------------------------------------------------------------------
+  def enpanel(self):
+    def complete(animation,widget):
+      self.padpanel_active = True
+
+    glb.root.speedbrake.knob_active = False
+    glb.root.throttle.knob_active = False
+    glb.root.flaps.knob_active = False
+    Animation.cancel_all(self)
+    glb.root.dgtpadctrl.enpanel()
+    anim = Animation(y=self.parent.height-self.height*1.02,t='out_expo',duration=0.3) 
+    anim.bind(on_complete=complete)
+    anim.start(self)
+
+#--------------------------------------------------------------------
+  def dispanel(self):
+    def complete(animation,widget):
+      self.padpanel_active = False
+      glb.root.speedbrake.knob_active = True
+      glb.root.throttle.knob_active = True
+      glb.root.flaps.knob_active = True
+      
+    Animation.cancel_all(self)
+    glb.root.dgtpadctrl.dispanel()
+    anim = Animation(y=self.parent.height,t='out_expo',duration=0.3) 
+    anim.bind(on_complete=complete)
+    anim.start(self)
+
+#--------------------------------------------------------------------
+  def showarea(self,old,new):
+    if old!='XX':
+      setattr(self,'panel'+old,False)
+
+    if new!='XX':
+      setattr(self,'panel'+new,True)
+
+    
+
+
+'''
+   class DgtPadCtrl
+'''
+class DgtPadCtrl(Widget):
+  padactive = False
+  current_mask_value = 'XX'
+
           
 #--------------------------------------------------------------------
   def __init__(self,**kwargs):
@@ -131,6 +143,10 @@ class DgtPadCtrl(Widget):
       self.toffsety = self.center_y - ty
       touch.grab(self)
 
+    elif self.parent.collide_point(*touch.pos) and self.padactive:
+      self.update(touch.pos)
+      touch.grab(self.parent)
+
 
 #--------------------------------------------------------------------
   def on_touch_move(self,touch):
@@ -154,18 +170,28 @@ class DgtPadCtrl(Widget):
     if (touch.grab_current is self) and self.padactive:
       self.do_center()
       touch.ungrab(self)
-
+    elif (touch.grab_current is self.parent) and self.padactive:
+      self.do_center()
+      touch.ungrab(self.parent)
+      
+      
 #--------------------------------------------------------------------
-  def update(self):
+  def update(self,pos=None):
     scale=self.parent.width/27
-    ygrid = (self.parent.height-(self.center_y-self.parent.y))/scale
-    xgrid = self.center_x/scale
-    print "x:%d,y:%d"%(xgrid,ygrid)
-    print self.btmap[int(ygrid)][int(xgrid)]
-
-
+    if pos==None:
+      ygrid = (self.parent.height-(self.center_y-self.parent.y))/scale
+      xgrid = self.center_x/scale
+    else:
+      tx,ty = pos
+      ygrid = (self.parent.height-(ty-self.parent.y))/scale
+      xgrid = tx/scale
+    tc = MASK[int(ygrid)][int(xgrid)]
+    if tc != self.current_mask_value:
+      self.parent.showarea(self.current_mask_value,tc)
+      self.current_mask_value = tc
 
 
   def do_center(self):
     self.center_y = self.parent.center_y
     self.center_x = self.parent.center_x
+    self.update()

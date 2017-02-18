@@ -33,23 +33,24 @@ from kivy.clock import Clock
 from inputs.pad import PadCtrl
 from inputs.dgtpad import DgtPadPanel,DgtPadCtrl
 from inputs.trim import RudderTrim,ElevatorTrim
-from inputs.button import ButtonsPanel
+from inputs.button import LButtonsPanel,RButtonsPanel
 from inputs.knobs import BrakesKnob,RudderKnob
 from inputs.knobs3d import Knobs3D,Knobs3DCtrl
 from Settings import *
 import comm
 
 
-Config.set('kivy', 'log_level', 'debug')
+Config.set('kivy', 'log_level', 'info')
 Config.write()  
 
 #for PC only
-Window.size = (960, 540)
-#Config.set('graphics', 'width', '200')
-#Config.set('graphics', 'height', '200')
+#Window.size = (960, 540)
+Window.size = (1280, 720)
 
 	
-Builder.load_file('Settings.kv')
+Builder.load_file('ui/settings.kv')
+Builder.load_file('ui/dgtpad.kv')
+Builder.load_file('ui/custom.kv')
 
 '''
 	 class MainUI
@@ -67,7 +68,8 @@ class MainUI(BoxLayout):#the app ui
 	flaps 				= ObjectProperty(None)
 	speedbrake 			= ObjectProperty(None)
 	lights				= ObjectProperty(None)
-	buttonspanel 		= ObjectProperty(None)
+	lbuttonspanel 		= ObjectProperty(None)
+	rbuttonspanel 		= ObjectProperty(None)
 	dgtpadpanel 		= ObjectProperty(None)
 	DgtPadCtrl        	= ObjectProperty(None)
 	init5on = False
@@ -135,7 +137,8 @@ class MainUI(BoxLayout):#the app ui
 	def on_ruddertrimBT(self,state):
 		if state == "down":
 			self.ruddertrim.enpanel()
-			self.buttonspanel.dispanel()
+			self.lbuttonspanel.dispanel()
+			self.rbuttonspanel.dispanel()
 		else:
 			self.ruddertrim.dispanel()
 
@@ -143,9 +146,11 @@ class MainUI(BoxLayout):#the app ui
 	def on_buttonpanelBT(self,state):
 		if state == "down":
 			self.ruddertrim.dispanel()
-			self.buttonspanel.enpanel()
+			self.lbuttonspanel.enpanel()
+			self.rbuttonspanel.enpanel()
 		else:
-			self.buttonspanel.dispanel()
+			self.lbuttonspanel.dispanel()
+			self.rbuttonspanel.dispanel()
 
 #--------------------------------------------------------------------
 
@@ -160,12 +165,17 @@ class MainUI(BoxLayout):#the app ui
 	def on_btpress(self,bt):
 		def untoggle(dt):
 			self.ids[bt]._do_press()
-			print "untoggle"
 
 		if not(glb.app.getSetting(bt)):
 			Clock.schedule_once(untoggle, 0.2)
 			
-		
+#--------------------------------------------------------------------
+	def on_accelerometer(self,state):
+		if state =="down":
+			p = AcclPopup()
+			p.open()
+		else:
+			print "up"
 
 #--------------------------------------------------------------------
 
@@ -230,10 +240,18 @@ class FlightSimRC(App): #our app
 			'btn2_text':'btn2',
 			'btn3_text':'btn3',
 			'btn4_text':'btn4',
+			'btn5_text':'btn5',
+			'btn6_text':'btn6',
+			'btn7_text':'btn7',
+			'btn8_text':'btn8',
 			'btn1_toggle':1,
 			'btn2_toggle':1,
 			'btn3_toggle':1,
-			'btn4_toggle':1
+			'btn4_toggle':1,
+			'btn5_toggle':1,
+			'btn6_toggle':1,
+			'btn7_toggle':1,
+			'btn8_toggle':1
 			})
 
 #--------------------------------------------------------------------

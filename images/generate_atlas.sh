@@ -1,1 +1,1 @@
-python -m kivy.atlas myatlas 1024x900 *.png
+python -m kivy.atlas myatlas 1530x1150 *.png

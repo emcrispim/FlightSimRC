@@ -11,7 +11,10 @@
 import glb
 
 from kivy.uix.widget import Widget
-from kivy.properties import NumericProperty
+from kivy.properties import NumericProperty,ObjectProperty
+from kivy.uix.popup import Popup
+#from plyer import accelerometer
+from kivy.clock import Clock
 
 
 
@@ -91,3 +94,49 @@ class PadCtrl(Widget):
     yref = self.parent.height-self.height
     y = (self.center_y-self.height/2.0)/yref * 100
     glb.root.setmsg('Y',int(y))
+
+
+
+'''
+   class AcclPopup
+'''   
+class AcclPopup(Popup):
+  
+  timer = 3
+  has_accl = True
+  bindroot = ObjectProperty(None)
+
+#--------------------------------------------------------------------
+  def __init__(self, **kwargs):
+    super(AcclPopup, self).__init__(**kwargs)
+
+#--------------------------------------------------------------------
+  def on_open(self):
+    self.bindroot.update_timer=True
+ #   try:
+ #     accelerometer._get_acceleration()
+ #     accelerometer.enable()
+ #   except:
+ #     self.has_accl = False
+
+    if self.has_accl:
+      Clock.schedule_interval(self.loop,1)
+      self.ids.timer_label.text = "Calibrate in %s s" % str(self.timer)
+    else:
+      self.ids.timer_label.text = "Accelerometer not available"
+  #    self.bindroot.ids.accl.state ="normal"
+
+#--------------------------------------------------------------------
+  def loop(self,dt):
+    if self.timer>0:
+      self.timer-=1
+      self.ids.timer_label.text = "Calibrate in %s s" % str(self.timer)
+    else:
+      Clock.unschedule(self.loop)
+      self.doacl = True
+      self.dismiss()
+
+#--------------------------------------------------------------------
+  def on_dismiss(self):
+    if self.has_accl:
+      self.bindroot.doAccelerometer()
