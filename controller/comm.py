@@ -71,7 +71,7 @@ class SSDP(Popup):
 		self.ids.msg.text = "Searching..."
 		self.dp = Client(self.ip,self)
 
-
+#--------------------------------------------------------------------
 	def int_to_ip(self,ipnum):
 		oc1 = int(ipnum / 16777216) % 256
 		oc2 = int(ipnum / 65536) % 256
@@ -79,6 +79,7 @@ class SSDP(Popup):
 		oc4 = int(ipnum) % 256
 		return '%d.%d.%d.%d' %(oc4,oc3,oc2,oc1)
 
+#--------------------------------------------------------------------
 	def getIP(self):
 		
 		try:
@@ -99,30 +100,104 @@ class SSDP(Popup):
 			ip = s.getsockname()[0]
 		return ip
 
+#--------------------------------------------------------------------
 	def on_dismiss(self):
 		Logger.debug("dismiss popup")
 
 
+class CommPopup(Popup):
 
-class DataReceive(DatagramProtocol):
+#--------------------------------------------------------------------
+	def __init__(self, **kwargs):
+		super(CommPopup, self).__init__(**kwargs)
+
+#--------------------------------------------------------------------
+	def connected(self):
+		self.ids.msg.text = "Connected"
+		self.ids.bt1.text = "Close"
+#--------------------------------------------------------------------
+	def setMsg(self,msg):
+		self.ids.msg.text = msg
+
+
+				
+
+'''
+	 class ctrl
+'''
+class ctrl(DatagramProtocol):
+	receiverIp = ''
+	receiverPort = 0
+	controllerPortNumber = False
+	controllerPortInterface = False
+	connected = False
+	msgQueue={}
+
+#--------------------------------------------------------------------
 	def datagramReceived(self, data, (host, port)):
 		Logger.debug("DataReceive:"+data)
 		if data == 'CONNECT ACK':
-			glb.comm.started=True
+			self.connected = True
+			self.popup.connected()
 
 		if data == 'ACK':
 			glb.root.lights.ack = 1
 			glb.root.lights_ack_timer = 5
-				
-class ctrl():
-	ip = ''
-	port = 0
-	outgoingport = False
-	started = False
 
+#--------------------------------------------------------------------
+	def init(self,manual,ip,port):
+		self.connected = False
+
+		if manual:
+			self.popup=CommPopup()
+			self.popup.setMsg('Connecting...')
+			self.popup.open()
+			Logger.debug("manual ip configuration")
+			self.init_ReceiverConnection(ip,port) 
+			self.init_ControllerPort(port+1)
+			#manual mode keep sending until receiver response
+		else:
+			Logger.debug("autodiscover configuration")
+			#start discover
+
+#--------------------------------------------------------------------
+	def init_ControllerPort(self,port):
+		self.controllerPortNumber = port  
+
+		self.UDPSock_out = socket(AF_INET,SOCK_DGRAM)
+		if self.controllerPortInterface:
+			self.controllerPortInterface.stopListening()
+		try:
+			self.controllerPortInterface = reactor.listenUDP(self.controllerPortNumber,self)
+		except:
+			Logger.error("port %d already in use "%(port+1))
+
+#--------------------------------------------------------------------
+	def init_ReceiverConnection(self,ip,port):
+		self.UDPSock_out = socket(AF_INET,SOCK_DGRAM)
+		self.receiverIp = ip
+		self.receiverPort = port
+
+
+#--------------------------------------------------------------------
+	def process(self):
+		if not self.connected:
+			self.send("CONNECT:%d\n"%self.controllerPortNumber)
+		else:
+			if len(self.msgQueue):
+				for key, value in self.msgQueue.iteritems():
+					msg=str(key)+':'+str(value)+'\n'
+					self.send(msg)
+				self.msgQueue={}
+
+#--------------------------------------------------------------------
+	def queue(self,key,value):
+		self.msgQueue[key]=value
+		
+#--------------------------------------------------------------------
 	def start(self,ip,port):
 		self.ip = ip
-		self.port = port
+		self.outport = port
 		Logger.debug("init UDP socket")
 		self.UDPSock_out = socket(AF_INET,SOCK_DGRAM)
 		if self.outgoingport:
@@ -133,9 +208,13 @@ class ctrl():
 			Logger.error("port %d already in use "%(port+1))
 		self.send("CONNECT:%d\n"%(port+1))
 
+#--------------------------------------------------------------------
 	def send(self,msg):
-		self.UDPSock_out.sendto(msg,(self.ip,self.port))
-		Logger.debug("SEND: %s"%msg.replace(':',';'))
+		try:
+			#Logger.debug("SEND: %s"%msg.replace(':',';'))
+			self.UDPSock_out.sendto(msg,(self.receiverIp,self.receiverPort))
+		except:
+			Logger.error("SEND")
 
 
 

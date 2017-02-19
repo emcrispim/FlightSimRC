@@ -40,12 +40,12 @@ from Settings import *
 import comm
 
 
-Config.set('kivy', 'log_level', 'info')
+Config.set('kivy', 'log_level', 'debug')
 Config.write()  
 
 #for PC only
-#Window.size = (960, 540)
-Window.size = (1280, 720)
+Window.size = (960, 540)
+#Window.size = (1280, 720)
 
 	
 Builder.load_file('ui/settings.kv')
@@ -73,8 +73,7 @@ class MainUI(BoxLayout):#the app ui
 	dgtpadpanel 		= ObjectProperty(None)
 	DgtPadCtrl        	= ObjectProperty(None)
 	init5on = False
-	glb.comm = commctrl = comm.ctrl()
-	send = {}
+	commctrl = comm.ctrl()
 	lights_act_timer = 0
 	lights_ack_timer = 0
 	settings = Settings()
@@ -93,26 +92,18 @@ class MainUI(BoxLayout):#the app ui
 			self.throttle.init('throttle')
 			self.flaps.init('flaps')
 			self.speedbrake.init('speedbrake')
-
-			p = comm.SSDP()
-			p.open()
+			self.commctrl.init(glb.app.getSetting('manualip'),glb.app.getSettingAsString('ip'),glb.app.getSetting('port'))
 			Clock.schedule_interval(self.loop,1/20.0)
 
-#--------------------------------------------------------------------
-	def startcom(self,ip,port):
-		Logger.debug("Start com")
-		self.commctrl.start(ip,port)
+
 
 #--------------------------------------------------------------------
-	
 	def setmsg(self,key,value):
 		self.lights.act = 1
 		self.lights_act_timer = 5
-		self.send[key]=str(value)
-		#print "%s,%s" %(key,str(value))
+		self.commctrl.queue(key,value)
 
 #--------------------------------------------------------------------
-
 	def loop(self, dt):
 		if self.lights_act_timer >1:
 			self.lights_act_timer-=1
@@ -126,13 +117,8 @@ class MainUI(BoxLayout):#the app ui
 			self.lights_ack_timer = 0
 			self.lights.ack = 0
 
-		if self.commctrl.started:
-			if len(self.send):
-				for key, value in self.send.iteritems():
-					msg=key+':'+value+'\n'
-					self.commctrl.send(msg)
-				self.send={}
-
+		self.commctrl.process()
+		
 #--------------------------------------------------------------------
 	def on_ruddertrimBT(self,state):
 		if state == "down":

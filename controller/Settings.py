@@ -92,5 +92,5 @@ class Settings(Popup):
 
 	#--------------------------------------------------------------------
 	def connect(self):
-		glb.root.startcom(self.ids.ip.text,int(self.ids.port.text))
+		glb.root.commctrl.init(1,self.ids.ip.text,int(self.ids.port.text))
 
