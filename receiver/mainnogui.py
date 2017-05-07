@@ -16,6 +16,8 @@ events = (uinput.BTN_JOYSTICK,
 		  uinput.BTN_Y,
 		  uinput.BTN_Z,
 		  uinput.BTN_START,
+		  uinput.ABS_HAT0X + (0, 100, 0, 0),
+		  uinput.ABS_HAT0Y + (0, 100, 0, 0),
 	      uinput.ABS_X + (0, 100, 0, 0), 
 	      uinput.ABS_Y + (0, 100, 0, 0),
 	      uinput.ABS_Z + (0, 100, 0, 0),
@@ -72,7 +74,11 @@ class s(CommService):
 		if key=='B7':
 			device.emit(uinput.BTN_Z, int(value))
 		if key=='B8':
-			device.emit(uinput.BTN_START, int(value))	
+			device.emit(uinput.BTN_START, int(value))
+		if key=='DPX':
+			device.emit(uinput.ABS_HAT0X, int(value))
+		if key=='DPY':
+			device.emit(uinput.ABS_HAT0Y, int(value))
 
 
 		print "AXIS:"+key+":"+value

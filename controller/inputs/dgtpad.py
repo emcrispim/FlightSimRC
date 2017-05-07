@@ -49,7 +49,16 @@ MASK = [
         ['SW','SW','SW','SW','SW','SW','SW','SW','SW','S' ,'S' ,'S' ,'S' ,'S' ,'S' ,'S' ,'S' ,'S' ,'SE','SE','SE','SE','SE','SE','SE','SE','SE','SE'], #27
     #   ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27']
        ]
-
+TCMAP ={ 'XX':[ 50, 50],
+         'NW':[  0,100],
+         'N': [ 50,100],
+         'NE':[100,100],
+         'E' :[100, 50],
+         'SE':[100,  0],
+         'S' :[50 ,  0],
+         'SW':[0  ,  0],
+         'W' :[0  , 50]
+         }
 
 '''
    class DgtPadPanel
@@ -187,6 +196,9 @@ class DgtPadCtrl(Widget):
       xgrid = tx/scale
     tc = MASK[int(ygrid)][int(xgrid)]
     if tc != self.current_mask_value:
+
+      glb.root.setmsg('DPX',TCMAP[tc][0])
+      glb.root.setmsg('DPY',TCMAP[tc][1])
       self.parent.showarea(self.current_mask_value,tc)
       self.current_mask_value = tc
 
