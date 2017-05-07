@@ -1,3 +1,18 @@
+<AcclPopup>:
+    title: 'Accl Calibrate'
+    size_hint: .4, .4
+    BoxLayout:
+        spacing:2
+        padding:2
+        orientation:'vertical'
+        Label:
+            id:timer_label
+            text:"Calibrate in 3 s"
+        Button:
+            text: 'Now'
+            on_press: root.dismiss()
+
+
 <B1@ToggleButton>:
     font_size:'16sp'
 	bold: True

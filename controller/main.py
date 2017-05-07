@@ -30,7 +30,7 @@ from kivy.clock import Clock
 
 
 # App libraries
-from inputs.pad import PadCtrl
+from inputs.pad import PadCtrl,AcclPopup
 from inputs.dgtpad import DgtPadPanel,DgtPadCtrl
 from inputs.trim import RudderTrim,ElevatorTrim
 from inputs.button import LButtonsPanel,RButtonsPanel
@@ -118,6 +118,7 @@ class MainUI(BoxLayout):#the app ui
 			self.lights.ack = 0
 
 		self.commctrl.process()
+		self.padctrl.process()
 		
 #--------------------------------------------------------------------
 	def on_ruddertrimBT(self,state):
@@ -166,10 +167,10 @@ class MainUI(BoxLayout):#the app ui
 #--------------------------------------------------------------------
 	def on_accelerometer(self,state):
 		if state =="down":
-			p = AcclPopup()
-			p.open()
+			AcclPopup().open()
 		else:
-			print "up"
+			self.padctrl.PadMode()
+			# print "up"
 
 #--------------------------------------------------------------------
 
