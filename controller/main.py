@@ -151,9 +151,15 @@ class MainUI(BoxLayout):#the app ui
 #--------------------------------------------------------------------
 
 	def on_btpress(self,bt):
+		statemap={"down":1,"normal":0}
+	
+		self.setmsg('B'+bt[3:4],statemap[self.ids[bt].state])
+	
 		def untoggle(dt):
 			self.ids[bt]._do_press()
+			self.setmsg('B'+bt[3:4],0)
 
+		Logger.debug("MAIN: button:"+bt+" state:"+self.ids[bt].state)
 		if not(glb.app.getSetting(bt)):
 			Clock.schedule_once(untoggle, 0.2)
 			

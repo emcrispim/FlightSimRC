@@ -7,7 +7,15 @@ from twisted.internet import reactor
 import uinput
 
 
-events = (uinput.BTN_JOYSTICK, 
+events = (uinput.BTN_JOYSTICK,
+		  uinput.BTN_A,
+		  uinput.BTN_B,
+		  uinput.BTN_C,
+		  uinput.BTN_EAST,
+		  uinput.BTN_X,
+		  uinput.BTN_Y,
+		  uinput.BTN_Z,
+		  uinput.BTN_START,
 	      uinput.ABS_X + (0, 100, 0, 0), 
 	      uinput.ABS_Y + (0, 100, 0, 0),
 	      uinput.ABS_Z + (0, 100, 0, 0),
@@ -49,6 +57,23 @@ class s(CommService):
 			device.emit(uinput.ABS_TILT_X, int(value))
 		if key=='Y1':
 			device.emit(uinput.ABS_TILT_Y, int(value))
+		if key=='B1':
+			device.emit(uinput.BTN_JOYSTICK, int(value))
+		if key=='B2':
+			device.emit(uinput.BTN_A, int(value))
+		if key=='B3':
+			device.emit(uinput.BTN_B, int(value))
+		if key=='B4':
+			device.emit(uinput.BTN_C, int(value))
+		if key=='B5':
+			device.emit(uinput.BTN_X, int(value))
+		if key=='B6':
+			device.emit(uinput.BTN_Y, int(value))
+		if key=='B7':
+			device.emit(uinput.BTN_Z, int(value))
+		if key=='B8':
+			device.emit(uinput.BTN_START, int(value))	
+
 
 		print "AXIS:"+key+":"+value
 
