@@ -83,7 +83,7 @@ class RudderKnob(Widget):
   toffsetx = None
   xmax = 0.925
   xmin = 0.07
-  rudder_active = True
+  enabled = True
 
 #--------------------------------------------------------------------
   def __init__(self,**kwargs):
@@ -91,14 +91,14 @@ class RudderKnob(Widget):
 
 #--------------------------------------------------------------------
   def on_touch_down(self,touch):
-    if self.collide_point(*touch.pos) and self.rudder_active:
+    if (self.collide_point(*touch.pos) and self.enabled):
       tx,ty = touch.pos
       self.toffsetx = self.center_x - tx
       touch.grab(self)
 
 #--------------------------------------------------------------------
   def on_touch_move(self,touch):
-    if touch.grab_current is self:
+    if touch.grab_current is self :
       xref = self.parent.width
       tx,ty=touch.pos
       ofx = tx + self.toffsetx
@@ -108,7 +108,7 @@ class RudderKnob(Widget):
 
 #--------------------------------------------------------------------
   def on_touch_up(self, touch):
-    if touch.grab_current is self:
+    if touch.grab_current is self :
       if glb.app.getSetting('rudderautocenter'):
         self.docenter()
         self.update()
@@ -128,3 +128,11 @@ class RudderKnob(Widget):
 #--------------------------------------------------------------------
   def docenter(self):
     self.center_x=self.parent.width*0.5
+
+#--------------------------------------------------------------------
+  def disable(self):
+    self.enabled = False
+
+#--------------------------------------------------------------------
+  def enable(self):
+    self.enabled = True

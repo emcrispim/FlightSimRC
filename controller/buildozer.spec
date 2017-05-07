@@ -37,8 +37,7 @@ version = 1.0.0
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy
 #requirements = kivy,plyer,twisted,pyjnius
-requirements = kivy,plyer,twisted
-#requirements =hostpython2, kivy,plyer,twisted
+requirements =  kivy,plyer,twisted
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
 # requirements.source.kivy = ../../kivy
@@ -61,7 +60,7 @@ orientation = landscape
 #
 # OSX Specific
 #
-
+# 
 #
 # author = © Copyright Info
 
@@ -100,7 +99,7 @@ android.permissions = INTERNET,VIBRATE,ACCESS_WIFI_STATE
 #android.ant_path =
 
 # (str) python-for-android git clone directory (if empty, it will be automatically cloned from github)
-#android.p4a_dir =
+# android.p4a_dir = /home/ecrispim/dev/python-for-android-old_toolchain
 
 # (list) python-for-android whitelist
 #android.p4a_whitelist =

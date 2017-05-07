@@ -44,7 +44,7 @@ Config.set('kivy', 'log_level', 'debug')
 Config.write()  
 
 #for PC only
-Window.size = (960, 540)
+#Window.size = (960, 540)
 #Window.size = (1280, 720)
 
 	
@@ -123,10 +123,12 @@ class MainUI(BoxLayout):#the app ui
 	def on_ruddertrimBT(self,state):
 		if state == "down":
 			self.ruddertrim.enpanel()
+			self.rudder.disable()
 			self.lbuttonspanel.dispanel()
 			self.rbuttonspanel.dispanel()
 		else:
 			self.ruddertrim.dispanel()
+			self.rudder.enable()
 
 #--------------------------------------------------------------------
 	def on_buttonpanelBT(self,state):
@@ -178,7 +180,6 @@ class FlightSimRC(App): #our app
 	texture_elevatortrim_wheel 	= ObjectProperty(None)
 	elevatortrim_value 			= NumericProperty(50)
 	ruddertrim_value 			= NumericProperty(50)
-	rudder 						= NumericProperty(50)
 
 #--------------------------------------------------------------------
 	def build(self):

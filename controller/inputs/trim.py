@@ -55,15 +55,8 @@ class RudderTrim(Widget):
 
   #--------------------------------------------------------------------
   def enpanel(self):
-    print self.pos
     def complete(animation,widget):
-      print "anim complete"
-      print "set panel enable"
-      print "set rudder disabled"
-      glb.root.rudder.rudder_active = False
       self.ruddertrim_active = True
-
-
     Animation.cancel_all(self)
     anim = Animation(y=0,t='out_expo',duration=0.3) 
     anim.bind(on_complete=complete)
@@ -72,9 +65,7 @@ class RudderTrim(Widget):
   #--------------------------------------------------------------------
   def dispanel(self):
     def complete(animation,widget):
-      glb.root.rudder.rudder_active = True
       self.ruddertrim_active = False
-      
     Animation.cancel_all(self)
     anim = Animation(y=-self.height,t='out_expo',duration=0.3) 
     anim.bind(on_complete=complete)
