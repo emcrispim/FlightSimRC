@@ -30,6 +30,8 @@ class Settings(Popup):
 		self.ids.port.text = str(glb.app.getSetting('port'))
 		self.ids.elevatortrims.value = glb.app.getSetting('elevatortrims')
 		self.ids.ruddertrims.value = glb.app.getSetting('ruddertrims')
+		self.ids.acclelevators.value = glb.app.getSetting('acclelevators')
+		self.ids.acclailerons.value = glb.app.getSetting('acclailerons')
 		self.ids.rudderautocenter.active = glb.app.getSetting('rudderautocenter')
 		self.ids.brakesautodisable.active = glb.app.getSetting('brakesautodisable')
 		self.ids.padautocenter.active = glb.app.getSetting('padautocenter')
@@ -62,6 +64,9 @@ class Settings(Popup):
 		glb.app.setSetting('port',int(self.ids.port.text))
 		glb.app.setSetting('elevatortrims',self.ids.elevatortrims.value)
 		glb.app.setSetting('ruddertrims',self.ids.ruddertrims.value)
+		glb.app.setSetting('acclelevators',self.ids.acclelevators.value)
+		glb.app.setSetting('acclailerons',self.ids.acclailerons.value)
+
 		glb.app.setSetting('rudderautocenter',int(self.ids.rudderautocenter.active))
 		glb.app.setSetting('brakesautodisable',int(self.ids.brakesautodisable.active))
 		glb.app.setSetting('padautocenter',int(self.ids.padautocenter.active))

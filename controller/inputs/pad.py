@@ -15,8 +15,8 @@ from kivy.properties import NumericProperty,ObjectProperty
 from kivy.uix.popup import Popup
 from plyer import accelerometer
 from kivy.clock import Clock
-
-
+from kivy.logger import Logger 
+from math import atan2,sqrt
 
 
 '''
@@ -119,6 +119,7 @@ class PadCtrl(Widget):
 				y = 1
 				z = 1
 
+
 			#Roll & Pitch Equations
 			aileron  = atan2(self.fy, self.fz)*57.3
 			elevator = atan2(-self.fx, sqrt(self.fy*self.fy + self.fz*self.fz))*57.3
@@ -126,6 +127,11 @@ class PadCtrl(Widget):
 			elevator = elevator / 45.0
 			aileron = aileron / 60.0
 			
+			# sensitivity
+			aileron=aileron*(50+glb.app.getSetting('acclailerons'))/150.0
+			elevator=elevator*(50+glb.app.getSetting('acclelevators'))/150.0
+			
+
 			if elevator>1:
 				elevator=1
 			elif elevator<-1:
@@ -135,9 +141,13 @@ class PadCtrl(Widget):
 			elif aileron<-1:
 				aileron=-1
 
-	 		# NOT FINISHED NOT WORKING CHANGE THIS 
--------self.padctrl.FGToControllerCoordinates(aileron,elevator)
-			self.padctrl.ControllerToFGCoordinates()
+			nx = self.parent.width/2
+			ny = self.parent.height/2*elevator+ self.parent.height/2
+			self.angle = -aileron*30.0
+			self.setposition(nx,ny)
+			glb.root.setmsg('X',int((aileron+1)*50)) #min:0 max:100
+			glb.root.setmsg('Y',int((elevator+1)*50)) #min:0 max:100
+
 
 
 
@@ -157,9 +167,9 @@ class AcclPopup(Popup):
 	def on_open(self):
 		try:
 			accelerometer._get_acceleration()
-		 	accelerometer.enable()
+			accelerometer.enable()
 		except:
-		 	self.has_accl = False
+			self.has_accl = False
 
 		if self.has_accl:
 			Clock.schedule_interval(self.loop,1)

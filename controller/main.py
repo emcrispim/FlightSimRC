@@ -230,6 +230,8 @@ class FlightSimRC(App): #our app
 			'brakesautodisable':1,
 			'ruddertrims':50,
 			'elevatortrims':50,
+			'acclelevators':50,
+			'acclailerons':50,
 			'btn1_text':'btn1',
 			'btn2_text':'btn2',
 			'btn3_text':'btn3',
